@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy 25th Birthday</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #feca57, #ff6b6b, #54a0ff);
+      background-size: 200% 200%;
+      animation: gradientFlow 10s ease infinite;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      width: 100%;
+      max-width: 390px;
+      height: 844px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #fff;
+      text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 2s ease-in-out, glow 2s infinite alternate;
+      margin: 0;
+    }
+
+    .celebrate-btn {
+      padding: 12px 24px;
+      font-size: 1em;
+      color: #fff;
+      background: #ff4757;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+      margin-top: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .celebrate-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .heart {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: #ff4757;
+      transform: rotate(-45deg);
+      animation: float 5s infinite ease-in-out;
+      opacity: 0.7;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      width: 15px;
+      height: 15px;
+      background: #ff4757;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart::before {
+      top: -7.5px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 7.5px;
+      top: 0;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      border-radius: 50%;
+      animation: confettiFall 4s infinite linear;
+      opacity: 0.8;
+    }
+
+    /* Random positions for hearts and confetti */
+    .heart:nth-child(1) { top: 15%; left: 25%; animation-delay: 0s; }
+    .heart:nth-child(2) { top: 35%; left: 65%; animation-delay: 1s; }
+    .heart:nth-child(3) { top: 55%; left: 35%; animation-delay: 1.5s; }
+    .heart:nth-child(4) { top: 75%; left: 75%; animation-delay: 2s; }
+    .confetti:nth-child(5) { left: 20%; animation-delay: 0s; }
+    .confetti:nth-child(6) { left: 40%; animation-delay: 0.5s; }
+    .confetti:nth-child(7) { left: 60%; animation-delay: 1s; }
+    .confetti:nth-child(8) { left: 80%; animation-delay: 1.5s; }
+
+    /* Animations */
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.7); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); }
+      100% { text-shadow: 0 5px 10px rgba(255, 255, 255, 0.6); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(-45deg); opacity: 0.7; }
+      50% { transform: translateY(-150px) rotate(-45deg); opacity: 0.3; }
+      100% { transform: translateY(-300px) rotate(-45deg); opacity: 0; }
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(-844px) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(844px) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Media query for mobile */
+    @media only screen and (max-width: 390px) {
+      h1 { font-size: 2em; }
+      .celebrate-btn { font-size: 0.9em; padding: 10px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Happy 25th Birthday!</h1>
+    <button class="celebrate-btn" onclick="window.location.href='envelope.html'">Celebrate!</button>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+    <div class="confetti"></div>
+  </div>
+</body>
+</html>

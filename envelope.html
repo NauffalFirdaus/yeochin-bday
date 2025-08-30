@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Romantic Envelope Letter</title>
+  <style>
+    :root {
+      --primary: #fff;
+      --bg-envelope-color: #dcd7d4;
+      --envelope-tab: #f7b2c3;
+      --envelope-cover: #eae9e9;
+      --shadow-color: rgba(0, 0, 0, 0.15);
+      --txt-color: #5a3a31;
+      --heart-color: #ff3b7a;
+      --button-color: #ff6b6b;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Dancing Script', cursive;
+      overscroll-behavior: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #background-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .container {
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      width: 100%;
+      max-width: 100vw;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .envelope-wrapper {
+      background: var(--bg-envelope-color);
+      box-shadow: 0 10px 40px var(--shadow-color);
+      border-radius: 12px;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1);
+      transform: scale(0.85);
+      position: relative;
+      z-index: 1;
+    }
+
+    .envelope {
+      position: relative;
+      width: 80vw;
+      max-width: 320px;
+      height: 60vw;
+      max-height: 240px;
+    }
+
+    .envelope::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      border-top: 35vw solid var(--envelope-tab);
+      border-right: 40vw solid transparent;
+      border-left: 40vw solid transparent;
+      transform-origin: top;
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), z-index 0.8s;
+    }
+
+    .envelope::after {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      width: 0;
+      height: 0;
+      border-top: 35vw solid transparent;
+      border-right: 40vw solid var(--envelope-cover);
+      border-bottom: 25vw solid var(--envelope-cover);
+      border-left: 40vw solid var(--envelope-cover);
+      border-radius: 0 0 10px 10px;
+    }
+
+    .letter {
+      position: absolute;
+      right: 22%;
+      bottom: 0;
+      width: 56%;
+      height: 78%;
+      background: var(--primary);
+      text-align: center;
+      transition: all 1s cubic-bezier(0.77, 0, 0.175, 1);
+      box-shadow: 0 5px 15px var(--shadow-color);
+      padding: 2vw 1.5vw;
+      opacity: 0;
+      border-radius: 8px;
+    }
+
+    .letter .text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 4vw;
+      color: var(--txt-color);
+      text-align: left;
+      opacity: 0;
+      transition: opacity 1.5s ease 1s;
+    }
+
+    .heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5vw;
+      height: 5vw;
+      background: var(--heart-color);
+      z-index: 4;
+      transform: translate(-50%, -20%) rotate(45deg);
+      box-shadow: 0 0 15px rgba(255, 59, 122, 0.7);
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+      border-radius: 2px;
+      transition: transform 0.5s ease-in-out 1s;
+    }
+
+    .heart:before,
+    .heart:after {
+      content: "";
+      position: absolute;
+      width: 5vw;
+      height: 5vw;
+      background-color: var(--heart-color);
+      border-radius: 50%;
+    }
+
+    .heart:before {
+      top: -2.5vw;
+    }
+
+    .heart:after {
+      right: 2.5vw;
+    }
+
+    .tap-instruction {
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Dancing Script', cursive;
+      font-size: 5vw;
+      color: var(--txt-color);
+      text-align: center;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      z-index: 3;
+      pointer-events: none;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    }
+
+    .flap > .envelope:before {
+      transform: rotateX(180deg);
+      z-index: 0;
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .flap > .envelope > .letter {
+      bottom: 45vw;
+      transform: scale(1.05);
+      opacity: 1;
+      transition-delay: 0.5s;
+    }
+
+    .flap > .envelope > .letter .text {
+      opacity: 1;
+    }
+
+    .flap > .heart {
+      transform: rotate(90deg) scale(1.2);
+      transition-delay: 0.4s;
+    }
+
+    .flap .tap-instruction {
+      opacity: 0;
+    }
+
+    .envelope-wrapper:not(.flap) > .envelope:before {
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1) 0.5s, z-index 0.8s 0.5s;
+      transform: rotateX(0deg);
+      z-index: 2;
+    }
+
+    .envelope-wrapper:not(.flap) > .envelope > .letter {
+      bottom: 0;
+      transform: scale(1);
+      opacity: 0;
+      transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .envelope-wrapper:not(.flap) > .envelope > .letter .text {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .reveal-button {
+      position: absolute;
+      bottom: -60px;   /* push below the envelope */
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: #ff4d6d;
+      color: white;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .envelope-wrapper.flap .reveal-button {
+      opacity: 1;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s;
+    }
+
+    .popup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-content {
+      background: var(--primary);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 80%;
+      box-shadow: 0 5px 15px var(--shadow-color);
+    }
+
+    .popup-content h2 {
+      font-family: 'Dancing Script', cursive;
+      color: var(--txt-color);
+      margin-bottom: 15px;
+    }
+
+    .popup-content input {
+      padding: 8px;
+      margin-bottom: 15px;
+      width: 80%;
+      border: 1px solid var(--txt-color);
+      border-radius: 5px;
+      font-family: 'Dancing Script', cursive;
+      font-size: 4vw;
+    }
+
+    .popup-content button {
+      padding: 8px 15px;
+      background: var(--button-color);
+      color: var(--primary);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Dancing Script', cursive;
+      font-size: 4vw;
+    }
+
+    .popup-content a {
+      display: block;
+      margin-top: 15px;
+      color: var(--heart-color);
+      text-decoration: none;
+      font-family: 'Dancing Script', cursive;
+      font-size: 4vw;
+    }
+
+    .popup-content p {
+      color: var(--txt-color);
+      font-family: 'Dancing Script', cursive;
+      font-size: 4vw;
+      margin-top: 10px;
+    }
+
+    @keyframes pulse {
+      0% { transform: translate(-50%, -20%) rotate(45deg) scale(1); }
+      50% { transform: translate(-50%, -20%) rotate(45deg) scale(1.2); }
+      100% { transform: translate(-50%, -20%) rotate(45deg) scale(1); }
+    }
+
+    @media only screen and (max-device-width: 1179px) and (-webkit-min-device-pixel-ratio: 2) {
+      .envelope {
+        width: 75vw;
+        height: 56.25vw;
+      }
+
+      .envelope::before {
+        border-top: 33vw solid var(--envelope-tab);
+        border-right: 37.5vw solid transparent;
+        border-left: 37.5vw solid transparent;
+      }
+
+      .envelope::after {
+        border-top: 33vw solid transparent;
+        border-right: 37.5vw solid var(--envelope-cover);
+        border-bottom: 23.25vw solid var(--envelope-cover);
+        border-left: 37.5vw solid var(--envelope-cover);
+      }
+
+      .letter {
+        padding: 1.5vw 1vw;
+      }
+
+      .letter .text {
+        font-size: 3.5vw;
+      }
+
+      .heart {
+        width: 4.5vw;
+        height: 4.5vw;
+      }
+
+      .heart:before,
+      .heart:after {
+        width: 4.5vw;
+        height: 4.5vw;
+      }
+
+      .heart:before {
+        top: -2.25vw;
+      }
+
+      .heart:after {
+        right: 2.25vw;
+      }
+
+      .flap > .envelope > .letter {
+        bottom: 42vw;
+      }
+
+      .tap-instruction {
+        font-size: 4.5vw;
+      }
+
+      .reveal-button {
+        font-size: 3.5vw;
+      }
+
+      .popup-content input,
+      .popup-content button,
+      .popup-content a,
+      .popup-content p {
+        font-size: 3.5vw;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <video id="background-video" autoplay loop muted playsinline>
+    <source src="pinkbg.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div class="container">
+    <div class="envelope-wrapper">
+      <div class="envelope">
+        <div class="letter">
+          <div class="text">
+            <strong>Happy Birthday Sayang ❤️</strong>
+            <p>
+              Happy 25th Birthday Yeochin. May this be your happiest day.
+              Saya doakan semoga awak dipanjangkan umur, dimurahkan rezeki and moga awak menjadi isteri saya.
+              I Love You, Sayang. 💌
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="heart"></div>
+      <div class="tap-instruction">Tap to Read</div>
+      <button class="reveal-button">Reveal Surprise</button>
+    </div>
+   
+    <div class="popup">
+      <div class="popup-content">
+        <h2>Where was our first date?</h2>
+        <input type="text" id="answer-input" placeholder="Specific name">
+        <button id="submit-btn" onclick="checkAnswer()">Submit</button>
+        <p id="result"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const envelope = document.querySelector('.envelope-wrapper');
+    const revealButton = document.querySelector('.reveal-button');
+    const popup = document.querySelector('.popup');
+    const result = document.querySelector('#result');
+    const audio = new Audio("song.mp3");
+    audio.loop = true;
+    let hasStarted = false;
+    let isMuted = false;
+
+    envelope.addEventListener('click', (e) => {
+      if (e.target !== revealButton) {
+        envelope.classList.toggle('flap');
+        if (envelope.classList.contains('flap') && !hasStarted) {
+          audio.play().catch(err => console.log("Audio blocked:", err));
+          hasStarted = true;
+        }
+      }
+    });
+
+    revealButton.addEventListener('click', () => {
+      popup.classList.add('show');
+    });
+
+let attemptCount = 0;
+let firstTrick = true;
+
+function checkAnswer() {
+  const answer = document.querySelector('#answer-input').value.trim();
+  const result = document.querySelector('#result');
+  const submitBtn = document.querySelector('#submit-btn');
+
+  const correctAnswers = [
+    "sunway carnival",
+    "sunway carnival mall",
+    "carnival",
+    "scm",
+    "Sunway Carnival Mall",
+    "Sunway carnival mall",
+    "Sunway carnival"
+  ];
+
+  attemptCount++;
+
+  // --- First attempt trick ---
+  if (firstTrick && correctAnswers.includes(answer)) {
+    firstTrick = false;
+    result.innerHTML = `
+      Try again, Sayang!😜 <br>
+      <button onclick="revealJoke()">Try Again</button>
+    `;
+    submitBtn.remove(); // remove submit button
+    return;
+  }
+
+  // --- Normal correct answer ---
+  if (correctAnswers.includes(answer)) {
+    result.innerHTML = '<a href="https://youtube.com/shorts/A08cTGhSKeY?feature=share" target="_blank">Click me cayang!!</a>';
+    submitBtn.remove(); // remove submit button
+    
+  } else {
+    // Wrong answer
+    if (attemptCount >= 3) {
+      result.textContent = 'Hint: Carnival';
+    } else {
+      result.textContent = 'Try again, Sayang!😜';
+    }
+  }
+}
+
+function revealJoke() {
+  const result = document.querySelector('#result');
+  const submitBtn = document.querySelector('#submit-btn');
+  result.innerHTML = `
+    Joking je, saja nak buat awak panic sebab lupa 😜 <br>
+    <a href="https://youtube.com/shorts/A08cTGhSKeY?feature=share" target="_blank">Click me cayang!!</a>
+  `;
+  submitBtn.remove(); // remove submit button after reveal
+}
+  </script>
+</body>
+</html>
